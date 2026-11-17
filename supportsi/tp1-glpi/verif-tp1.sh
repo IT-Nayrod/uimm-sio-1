@@ -52,11 +52,14 @@ section() {
 # ---------- Outils ----------
 
 # Base de GLPI : lue dans le fichier de configuration créé par l'assistant
+# Client SQL : la commande s'appelle mariadb (le nom mysql n'existe plus par défaut avec MariaDB 11)
+CLIENT_SQL=$(command -v mariadb || command -v mysql)
+
 BASE=$(sed -n "s/.*dbdefault *= *'\([^']*\)'.*/\1/p" "$GLPI_DIR/config/config_db.php" 2>/dev/null)
 [ -z "$BASE" ] && BASE="glpi"
 
 sql() {
-    mysql -N -B "$BASE" -e "$1" 2>/dev/null
+    "$CLIENT_SQL" -N -B "$BASE" -e "$1" 2>/dev/null
 }
 
 nombre() {
@@ -211,7 +214,7 @@ verifier "Site GLPI activé sur le port ${PORT_GLPI}, qui n'expose que ${GLPI_DI
 verifier "Le site GLPI ne prend pas la place de SecureLab (pas de default_server sur le port 80)" \
     "le site GLPI écoute sur ${PORT_GLPI}, sans default_server (étape 2)" t_pas_default_server
 verifier "fastcgi_pass pointe vers la bonne version de PHP" \
-    "ls /run/php/ donne le nom exact du fichier .sock à mettre dans le site GLPI (étape 2)" t_socket_php
+    "le site GLPI doit contenir fastcgi_pass unix:/run/php/php-fpm.sock; (étape 2)" t_socket_php
 verifier "GLPI répond sur http://127.0.0.1:${PORT_GLPI}" \
     "vérifie sudo nginx -t, puis systemctl status nginx php${PHPV}-fpm" t_glpi_repond
 verifier "Port ${PORT_GLPI} ouvert dans UFW au seul réseau du labo (pas à Anywhere)" \

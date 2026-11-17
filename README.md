@@ -21,6 +21,7 @@ cd ~/uimm-sio-1 && git pull
 
 | Dossier | TP | Scripts |
 | --- | --- | --- |
+| `cyber/tp4-cles` | Cybersécurité, TP4 : client Ubuntu Desktop et clés SSH centralisées | `tp4_check.sh` (vérification, sur le serveur) |
 | `supportsi/tp1-glpi` | Support SI, TP Découverte : GLPI sur Serveur-Cyber | `verif-tp1.sh` (vérification, sur Serveur-Cyber) |
 | `supportsi/tp2-incidents` | Support SI, TP2 : incidents automatiques et API de GLPI | scripts `incident-*.sh` (sur client2 et client3), `verif-tp2.sh` (vérification, sur Serveur-Cyber) |
 | `supportsi/tp3-catalogue` | Support SI, TP3 : catalogue de services, formulaires et demandes | `verif-tp3.sh` (vérification, sur Serveur-Cyber) |

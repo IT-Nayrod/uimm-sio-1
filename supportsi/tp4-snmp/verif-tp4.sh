@@ -37,9 +37,12 @@ verifier() {
 }
 section() { lignes+=("" "${GRAS}$1${RAZ}"); }
 
+# Client SQL : la commande s'appelle mariadb (le nom mysql n'existe plus par défaut avec MariaDB 11)
+CLIENT_SQL=$(command -v mariadb || command -v mysql)
+
 BASE=$(sed -n "s/.*dbdefault *= *'\([^']*\)'.*/\1/p" "$GLPI_DIR/config/config_db.php" 2>/dev/null)
 [ -z "$BASE" ] && BASE="glpi"
-sql()    { mysql --default-character-set=utf8mb4 -N -B "$BASE" -e "$1" 2>/dev/null; }
+sql()    { "$CLIENT_SQL" --default-character-set=utf8mb4 -N -B "$BASE" -e "$1" 2>/dev/null; }
 nombre() { local n; n=$(sql "$1"); [[ "$n" =~ ^[0-9]+$ ]] && echo "$n" || echo 0; }
 au_moins() { [ "$(nombre "$2")" -ge "$1" ]; }
 
